@@ -1,0 +1,84 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  background-color: orange; /* Set background color to orange */
+  border-radius: 15px; /* Add rounded corners */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms, transform 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+  transform: scale(1.1); /* Slightly increase size on hover */
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px); /* Adds a glass effect */
+}
+
+.read-the-docs {
+  color:blue;
+  font-style: italic;
+  font-weight: bold;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adds a slight shadow for better readability */
+}
+
+button {
+  background-color: #ff6600; /* Darker shade of orange */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: #cc5500; /* Even darker orange on hover */
+  transform: scale(1.05); /* Slightly enlarges the button */
+}
+
+/* Styling update and delete icons */
+.update-icon,
+.delete-icon {
+  color: black; /* Set icon color to black */
+  font-size: 1.5rem; /* Adjust size if necessary */
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.update-icon:hover,
+.delete-icon:hover {
+  transform: scale(1.2); /* Slightly enlarge on hover */
+}
