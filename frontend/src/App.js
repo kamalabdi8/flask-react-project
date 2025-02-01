@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react";
-import ContactList from "./ContactList";
-import ContactForm from "./ContactForm";
-import "./App.css";
+import ContactForm from "./ContactForm.js";
+import ContactList from "./ContactList.js";
 
 function App() {
   const [contacts, setContacts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentContact, setCurrentContact] = useState({});
-  const [isLoading, setIsLoading] = useState(true); // Added loading state
-  const [error, setError] = useState(null); // Added error state
+  const [editingContact, setEditingContact] = useState(null);
 
   useEffect(() => {
     fetchContacts();
@@ -17,64 +13,28 @@ function App() {
   const fetchContacts = async () => {
     try {
       const response = await fetch("http://127.0.0.1:5000/contacts");
-      if (!response.ok) {
-        throw new Error("Failed to fetch contacts");
-      }
       const data = await response.json();
-      setContacts(data.contacts);
-      setIsLoading(false); // Set loading to false after data is fetched
-    } catch (err) {
-      setError(err.message); // Handle error if fetch fails
-      setIsLoading(false); // Set loading to false even if an error occurs
+      setContacts(data);
+    } catch (error) {
+      console.error("Error fetching contacts:", error);
     }
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setCurrentContact({});
-  };
-
-  const openCreateModal = () => {
-    if (!isModalOpen) setIsModalOpen(true);
-  };
-
-  const openEditModal = (contact) => {
-    if (isModalOpen) return;
-    setCurrentContact(contact);
-    setIsModalOpen(true);
-  };
-
-  const onUpdate = () => {
-    closeModal();
-    fetchContacts();
   };
 
   return (
     <div>
+      <h1>Contact Management</h1>
+      <ContactForm
+        existingContact={editingContact}
+        updateCallback={() => {
+          fetchContacts();
+          setEditingContact(null);
+        }}
+      />
       <ContactList
         contacts={contacts}
-        updateContact={openEditModal}
-        updateCallback={onUpdate}
+        onDelete={fetchContacts}
+        onEdit={setEditingContact} // Pass setEditingContact to edit
       />
-      <button onClick={openCreateModal}>Create New Contact</button>
-
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={closeModal}>
-              ×
-            </span>
-            <ContactForm
-              existingContact={currentContact}
-              updateCallback={onUpdate}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Display loading or error states */}
-      {isLoading && <p>Loading contacts...</p>}
-      {error && <p>Error: {error}</p>}
     </div>
   );
 }

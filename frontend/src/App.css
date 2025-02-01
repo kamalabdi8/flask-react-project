@@ -3,9 +3,14 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  background-color: orange; /* Set background color to orange */
-  border-radius: 15px; /* Add rounded corners */
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  background-color: orange;
+  border-radius: 15px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .logo {
@@ -14,10 +19,12 @@
   will-change: filter;
   transition: filter 300ms, transform 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
-  transform: scale(1.1); /* Slightly increase size on hover */
+  transform: scale(1.1);
 }
+
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
@@ -39,21 +46,41 @@
 
 .card {
   padding: 2em;
-  background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px); /* Adds a glass effect */
+  backdrop-filter: blur(10px);
+  width: 80%;
+  max-width: 600px;
+  text-align: center;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  text-align: center;
+}
+
+.contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 10px 15px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .read-the-docs {
-  color:blue;
+  color: blue;
   font-style: italic;
   font-weight: bold;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Adds a slight shadow for better readability */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
 }
 
 button {
-  background-color: #ff6600; /* Darker shade of orange */
+  background-color: black;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -62,23 +89,37 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  margin: 5px;
 }
 
 button:hover {
-  background-color: #cc5500; /* Even darker orange on hover */
-  transform: scale(1.05); /* Slightly enlarges the button */
+  background-color: blue;
+  transform: scale(1.05);
 }
 
-/* Styling update and delete icons */
 .update-icon,
 .delete-icon {
-  color: black; /* Set icon color to black */
-  font-size: 1.5rem; /* Adjust size if necessary */
+  color: black;
+  font-size: 1.5rem;
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
 }
 
 .update-icon:hover,
 .delete-icon:hover {
-  transform: scale(1.2); /* Slightly enlarge on hover */
+  transform: scale(1.2);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  border-color: blue;
 }

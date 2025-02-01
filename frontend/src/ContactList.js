@@ -1,60 +1,32 @@
 import React from "react";
 
-const ContactList = ({ contacts, updateContact, updateCallback }) => {
-  const onDelete = async (id) => {
-    try {
-      const options = {
-        method: "DELETE"
-      };
-      const response = await fetch(`http://127.0.0.1:5000/delete_contact/${id}`, options);
-      if (response.status === 200) {
-        updateCallback();
-      } else {
-        console.error("Failed to delete");
-      }
-    } catch (error) {
-      alert(error);
+function ContactList({ contacts, onDelete, onEdit }) {
+  const handleDelete = async (id) => {
+    const response = await fetch(`http://127.0.0.1:5000/delete_contact/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      onDelete();
+    } else {
+      console.error("Error deleting contact");
     }
   };
 
-  return React.createElement(
-    "div",
-    null,
-    React.createElement("h2", null, "Contacts"),
-    React.createElement(
-      "table",
-      null,
-      React.createElement(
-        "thead",
-        null,
-        React.createElement("tr", null,
-          React.createElement("th", null, "First Name"),
-          React.createElement("th", null, "Last Name"),
-          React.createElement("th", null, "Email"),
-          React.createElement("th", null, "Actions")
-        )
-      ),
-      React.createElement(
-        "tbody",
-        null,
-        contacts.map((contact) =>
-          React.createElement(
-            "tr",
-            { key: contact.id },
-            React.createElement("td", null, contact.firstName),
-            React.createElement("td", null, contact.lastName),
-            React.createElement("td", null, contact.email),
-            React.createElement(
-              "td",
-              null,
-              React.createElement("button", { onClick: () => updateContact(contact) }, "Update"),
-              React.createElement("button", { onClick: () => onDelete(contact.id) }, "Delete")
-            )
-          )
-        )
-      )
-    )
+  return (
+    <div>
+      <h2>Contact List</h2>
+      <ul>
+        {contacts.map((contact) => (
+          <li key={contact.id}>
+            {contact.first_name} {contact.last_name} - {contact.email}
+            <button onClick={() => onEdit(contact)}>Edit</button> {/* Edit button */}
+            <button onClick={() => handleDelete(contact.id)}>Delete</button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
-};
+}
 
 export default ContactList;
