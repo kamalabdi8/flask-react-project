@@ -4,6 +4,7 @@ const ContactForm = ({ existingContact = null, updateCallback }) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     if (existingContact) {
@@ -17,38 +18,43 @@ const ContactForm = ({ existingContact = null, updateCallback }) => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setError("");
 
     const data = { first_name: firstName, last_name: lastName, email };
 
-    const url = "http://127.0.0.1:5000/" + (updating ? `update_contact/${existingContact.id}` : "create_contact");
+    const url = `http://127.0.0.1:5000/${updating ? `update-contact/${existingContact.id}` : "create-contact"}`;
     const options = {
       method: updating ? "PATCH" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
 
-    const response = await fetch(url, options);
-    if (response.ok) {
+    try {
+      const response = await fetch(url, options);
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "An error occurred");
+      }
       updateCallback();
-    } else {
-      const errorData = await response.json();
-      alert(errorData.error || "An error occurred");
+    } catch (err) {
+      setError(err.message);
     }
   };
 
   return (
     <form onSubmit={onSubmit}>
+      {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
-        <label htmlFor="firstName">First Name:</label>
-        <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+        <label>First Name:</label>
+        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="lastName">Last Name:</label>
-        <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+        <label>Last Name:</label>
+        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
       </div>
       <div>
-        <label htmlFor="email">Email:</label>
-        <input type="text" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <label>Email:</label>
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
       </div>
       <button type="submit">{updating ? "Update Contact" : "Create Contact"}</button>
     </form>
