@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from flask_jwt_extended import JWTManager, create_access_token
 
 app = Flask(__name__)
@@ -9,7 +9,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'supersecretkey'  # Change in production
 
 db = SQLAlchemy(app)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 jwt = JWTManager(app)
 
 # Contact Model
@@ -33,11 +33,13 @@ with app.app_context():
 
 # Routes
 @app.route('/contacts', methods=['GET'])
+@cross_origin(origin='http://localhost:3000')
 def get_contacts():
     contacts = Contact.query.all()
     return jsonify([contact.to_dict() for contact in contacts])
 
 @app.route('/contact/<int:id>', methods=['GET'])
+@cross_origin(origin='http://localhost:3000')
 def get_contact(id):
     contact = Contact.query.get(id)
     if not contact:
@@ -45,7 +47,8 @@ def get_contact(id):
     return jsonify(contact.to_dict())
 
 @app.route('/create-contact', methods=['POST'])
-def createcontact():
+@cross_origin(origin='http://localhost:3000', headers=['Content-Type', 'Authorization'])
+def create_contact():
     data = request.get_json()
 
     if Contact.query.filter_by(email=data['email']).first():
@@ -61,6 +64,7 @@ def createcontact():
     return jsonify({"message": "Contact added successfully"}), 201
 
 @app.route('/update-contact/<int:id>', methods=['PATCH'])
+@cross_origin(origin='http://localhost:3000', headers=['Content-Type', 'Authorization'])
 def update_contact(id):
     contact = Contact.query.get(id)
     if not contact:
@@ -84,6 +88,7 @@ def update_contact(id):
         return jsonify({"error": str(e)}), 500
 
 @app.route('/delete-contact/<int:id>', methods=['DELETE'])
+@cross_origin(origin='http://localhost:3000', headers=['Content-Type', 'Authorization'])
 def delete_contact(id):
     contact = Contact.query.get(id)
     if not contact:
@@ -97,6 +102,7 @@ def delete_contact(id):
         return jsonify({"error": str(e)}), 500
 
 @app.route('/login', methods=['POST'])
+@cross_origin(origin='http://localhost:3000', headers=['Content-Type', 'Authorization'])
 def login():
     data = request.get_json()
     email = data.get("email")
