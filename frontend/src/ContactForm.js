@@ -22,7 +22,7 @@ const ContactForm = ({ existingContact = null, updateCallback }) => {
 
     const data = { first_name: firstName, last_name: lastName, email };
 
-    const url = `http://127.0.0.1:5001/${updating ? `update-contact/${existingContact.id}` : "create-contact"}`;
+    const url = `http://127.0.0.1:5000/${updating ? `update-contact/${existingContact.id}` : "create-contact"}`;
     const options = {
       method: updating ? "PATCH" : "POST",
       headers: { "Content-Type": "application/json" },
@@ -46,17 +46,31 @@ const ContactForm = ({ existingContact = null, updateCallback }) => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <div>
         <label>First Name:</label>
-        <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+        <input 
+          type="text" 
+          value={firstName} 
+          onChange={(e) => setFirstName(e.target.value)} 
+        />
       </div>
       <div>
         <label>Last Name:</label>
-        <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+        <input 
+          type="text" 
+          value={lastName} 
+          onChange={(e) => setLastName(e.target.value)} 
+        />
       </div>
       <div>
         <label>Email:</label>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+        <input 
+          type="text" 
+          value={email} 
+          onChange={(e) => setEmail(e.target.value)} 
+        />
       </div>
-      <button type="submit">{updating ? "Update Contact" : "Create Contact"}</button>
+      <button type="submit">
+        {updating ? "Update Contact" : "Create Contact"}
+      </button>
     </form>
   );
 };
